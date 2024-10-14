@@ -158,7 +158,17 @@ def _get_format_duration(duration):
 
 
 class _CustomLogger(logging.Logger):
+    """
+    Custom logger with custom format and methods.
+    """
+
     def __init__(self, name, tag):
+        """
+        Constructor.
+        Call the super class.
+        Set a custom formatter.
+        """
+
         super().__init__(name)
 
         # get the formatter
@@ -216,21 +226,42 @@ class _CustomLogger(logging.Logger):
         self.log(level, "exception : %s / %s" % (module, name))
 
     def BlockIndent(self):
+        """
+        Return a class for indenting a block of code (using "with" statement).
+            - Uses enter and exit magic methods.
+            - Indent the results inside the block.
+        """
+
         return _BlockIndent(self)
 
     def BlockTimer(self, name=None, level="INFO"):
+        """
+        Return a class for timing a block of code (using "with" statement).
+            - Uses enter and exit magic methods.
+            - Display the name of the block.
+            - Display timing information.
+            - Indent the results inside the block.
+
+        Parameters
+        ----------
+        name : string
+            Name of the code block.
+        level : string
+            Logging level to be used.
+        """
+
         return _BlockTimer(self, name, level)
 
 
 class _DeltaTimeFormatter(logging.Formatter):
     """
-    Class for adding elapsed time to a logger.
+    Custom formatter for adding elapsed time to a logger.
     """
 
     def __init__(self, tag):
         """
         Constructor.
-        Create a timer.
+        Call the super class.
         """
 
         # call parent constructor
@@ -340,9 +371,8 @@ class _DeltaTimeFormatter(logging.Formatter):
 
 class _BlockIndent:
     """
-    Class for timing a block of code.
+    Class for indenting a block of code.
         - Uses enter and exit magic methods.
-        - Display the name of the block.
         - Indent the results inside the block.
 
     Parameters
