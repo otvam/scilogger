@@ -32,7 +32,7 @@ An example is located in the `example` folder of the repository:
 
 ```bash
 # Set the configuration file.
-export SCILOGGER="configlogger.ini"
+export SCILOGGER="configlocal.ini"
 
 # Run the Python script.
 python run_logger.py
