@@ -16,6 +16,8 @@
 * First, the **default configuration** is loaded (`scilogger/scilogger.ini`).
 * Afterward, a **custom file** can be loaded with an environment variable (`SCILOGGER`)
 
+SciLogger is written in Python without any external dependencies.
+
 ## Warning
 
 * This logging module is **based** on the **Python logging module**.
