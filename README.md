@@ -1,7 +1,8 @@
 # SciLogger - Python Logging for Science 
 
 > * **Repository: [github.com/otvam/scilogger](https://github.com/otvam/scilogger)**
-> * **Package: [pypi.org/project/scilogger](https://pypi.org/project/scilogger)**
+> * **PyPi: [pypi.org/project/scilogger](https://pypi.org/project/scilogger)**
+> * **Conda: [anaconda.org/conda-forge/scilogger](https://anaconda.org/conda-forge/scilogger)**
 
 ## Summary
 
@@ -45,6 +46,7 @@ python run_logger.py
 * Tags: https://github.com/otvam/scilogger/tags
 * Issues: https://github.com/otvam/scilogger/issues
 * PyPi: https://pypi.org/project/scilogger
+* Conda: https://anaconda.org/conda-forge/scilogger
 
 ## Author
 
