@@ -106,6 +106,31 @@ def _check_config():
     _check_dict("MODULE_LEVEL", MODULE_LEVEL)
 
 
+def _load_config():
+    """
+    Load the logger config file.
+    """
+
+    # init parser and set mode to case-sensitive
+    config = configparser.ConfigParser()
+    config.optionxform = str
+
+    # load the default file
+    with importlib.resources.path("scilogger", "scilogger.ini") as file:
+        out = config.read(file)
+        if len(out) != 1:
+            raise RuntimeError("config file cannot be loaded: %s" % file)
+
+    # get file custom file
+    file = os.getenv("SCILOGGER")
+    if file is not None:
+        out = config.read(file)
+        if len(out) != 1:
+            raise RuntimeError("config file cannot be loaded: %s" % file)
+
+    return config
+
+
 def _get_level(name):
     """
     Get the corresponding logging level.
@@ -634,63 +659,40 @@ def get_logger(name, tag=None):
     return logger
 
 
-# load the config file
-try:
-    # init parser and set mode to case-sensitive
-    config = configparser.ConfigParser()
-    config.optionxform = str
+# oad the logger config file
+config = _load_config()
 
-    # load the default file
-    with importlib.resources.path("scilogger", "scilogger.ini") as file:
-        out = config.read(file)
-        if len(out) != 1:
-            raise RuntimeError("config file cannot be loaded: %s" % file)
+# load format data
+FORMAT = config.get("GLOBAL", "FORMAT", raw=True)
+LEVEL_DEFAULT = config.get("GLOBAL", "LEVEL_DEFAULT", raw=True)
+EXCEPTION_TRACE = config.getboolean("GLOBAL", "EXCEPTION_TRACE")
+INDENTATION = config.getint("GLOBAL", "INDENTATION")
 
-    # get file custom file
-    file = os.getenv("SCILOGGER")
-    if file is not None:
-        out = config.read(file)
-        if len(out) != 1:
-            raise RuntimeError("config file cannot be loaded: %s" % file)
+# load color data
+COLOR_RESET = _decode_escape(config.get("GLOBAL", "COLOR_RESET", raw=True))
+COLOR_DEFAULT = _decode_escape(config.get("GLOBAL", "COLOR_DEFAULT", raw=True))
+COLOR_USE = config.getboolean("GLOBAL", "COLOR_USE")
 
-    # load format data
-    FORMAT = config.get("GLOBAL", "FORMAT", raw=True)
-    LEVEL_DEFAULT = config.get("GLOBAL", "LEVEL_DEFAULT", raw=True)
-    EXCEPTION_TRACE = config.getboolean("GLOBAL", "EXCEPTION_TRACE")
-    INDENTATION = config.getint("GLOBAL", "INDENTATION")
+# load timing data
+TIMESTAMP_UTC = config.getboolean("GLOBAL", "TIMESTAMP_UTC")
+TIMESTAMP_FMT = config.get("GLOBAL", "TIMESTAMP_FMT", raw=True)
+DURATION_FMT = config.get("GLOBAL", "DURATION_FMT", raw=True)
 
-    # load color data
-    COLOR_RESET = _decode_escape(config.get("GLOBAL", "COLOR_RESET", raw=True))
-    COLOR_DEFAULT = _decode_escape(config.get("GLOBAL", "COLOR_DEFAULT", raw=True))
-    COLOR_USE = config.getboolean("GLOBAL", "COLOR_USE")
+# load color level
+COLOR_LEVEL = dict(config.items("COLOR_LEVEL", raw=True))
+for tag, value in COLOR_LEVEL.items():
+    COLOR_LEVEL[tag] = _decode_escape(value)
 
-    # load timing data
-    TIMESTAMP_UTC = config.getboolean("GLOBAL", "TIMESTAMP_UTC")
-    TIMESTAMP_FMT = config.get("GLOBAL", "TIMESTAMP_FMT", raw=True)
-    DURATION_FMT = config.get("GLOBAL", "DURATION_FMT", raw=True)
+# load module level
+MODULE_LEVEL = dict(config.items("MODULE_LEVEL", raw=True))
+for tag, value in MODULE_LEVEL.items():
+    MODULE_LEVEL[tag] = _decode_escape(value)
 
-    # load color level
-    COLOR_LEVEL = dict(config.items("COLOR_LEVEL", raw=True))
-    for tag, value in COLOR_LEVEL.items():
-        COLOR_LEVEL[tag] = _decode_escape(value)
+# global timestamp (constant over the complete run)
+GLOBAL_TIMESTAMP = get_timestamp()
 
-    # load module level
-    MODULE_LEVEL = dict(config.items("MODULE_LEVEL", raw=True))
-    for tag, value in MODULE_LEVEL.items():
-        MODULE_LEVEL[tag] = _decode_escape(value)
+# logging indentation level (updated inside the blocks)
+GLOBAL_LEVEL = 0
 
-    # check file integrity
-    _check_config()
-
-    # global timestamp (constant over the complete run)
-    GLOBAL_TIMESTAMP = get_timestamp()
-
-    # logging indentation level (updated inside the blocks)
-    GLOBAL_LEVEL = 0
-except Exception as ex:
-    print("==========================", file=sys.stderr)
-    print("INVALID CONFIGURATION FILE", file=sys.stderr)
-    print("==========================", file=sys.stderr)
-    print(str(ex), file=sys.stderr)
-    print("==========================", file=sys.stderr)
-    sys.exit(1)
+# check file integrity
+_check_config()
