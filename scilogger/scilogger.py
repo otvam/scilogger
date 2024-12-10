@@ -116,10 +116,11 @@ def _load_config():
     config.optionxform = str
 
     # load the default file
-    with importlib.resources.path("scilogger", "scilogger.ini") as file:
-        out = config.read(file)
+    folder = importlib.resources.files("scilogger")
+    with importlib.resources.as_file(folder.joinpath("scilogger.ini")) as fid:
+        out = config.read(fid)
         if len(out) != 1:
-            raise RuntimeError("config file cannot be loaded: %s" % file)
+            raise RuntimeError("config file cannot be loaded: %s" % fid)
 
     # get file custom file
     file = os.getenv("SCILOGGER")

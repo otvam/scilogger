@@ -11,8 +11,9 @@ __license__ = "BSD License"
 
 # get the version number
 try:
-    with importlib.resources.open_text("scilogger", "version.txt") as file:
-        __version__ = file.read()
+    filename = importlib.resources.files("scilogger").joinpath("version.txt")
+    with filename.open("r") as fid:
+        __version__ = fid.read()
 except FileNotFoundError:
     __version__ = 'x.x.x'
 
