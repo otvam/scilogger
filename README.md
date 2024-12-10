@@ -18,6 +18,7 @@
 * Afterward, a **custom file** can be loaded with an environment variable (`SCILOGGER`)
 
 SciLogger is written in Python without any external dependencies.
+SciLogger is respecting **semantic versioning** (starting from version 1.2).
 
 ## Warning
 
