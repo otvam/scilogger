@@ -517,6 +517,22 @@ class _BlockTimer:
             self.logger.log(self.level, "exit : " + duration)
 
 
+def disable():
+    """
+    Disable all the loggers (set to max level).
+    """
+
+    logging.disable(sys.maxsize)
+
+
+def enable():
+    """
+    Enable all the loggers (set to min level).
+    """
+
+    logging.disable(0)
+
+
 def get_timestamp():
     """
     Get a timestamp with the current time.
