@@ -345,7 +345,7 @@ class _DeltaTimeFormatter(logging.Formatter):
             record.msg = pad + line
 
             # format the line
-            out_tmp = super(_DeltaTimeFormatter, self).format(record)
+            out_tmp = super().format(record)
 
             # add color and padding
             if COLOR_USE:
@@ -386,7 +386,7 @@ class _DeltaTimeFormatter(logging.Formatter):
 
         # format the attached exception (if any)
         if exc_info is not None:
-            err = super(_DeltaTimeFormatter, self).formatException(exc_info)
+            err = super().formatException(exc_info)
             out_list += self._handle_lines(record, levelname, err)
 
         # join the lines
