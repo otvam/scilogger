@@ -170,7 +170,7 @@ def _get_format_duration(duration):
     microseconds = duration.microseconds
     hours, remainder = divmod(seconds, 3600)
     minutes, remainder = divmod(remainder, 60)
-    seconds = remainder+microseconds/1e6
+    seconds = remainder + microseconds / 1e6
 
     # format duration
     duration_str = DURATION_FMT.format(
@@ -311,7 +311,7 @@ class _DeltaTimeFormatter(logging.Formatter):
 
         # add the elapsed time to the log record
         timestamp = get_timestamp()
-        duration = timestamp-GLOBAL_TIMESTAMP
+        duration = timestamp - GLOBAL_TIMESTAMP
         record.timestamp = _get_format_timestamp(timestamp)
         record.duration = _get_format_duration(duration)
 
@@ -334,7 +334,7 @@ class _DeltaTimeFormatter(logging.Formatter):
         """
 
         # get the padding for the indentation
-        pad = " " * (GLOBAL_LEVEL*INDENTATION)
+        pad = " " * (GLOBAL_LEVEL * INDENTATION)
 
         # array for the lines
         out_list = []
@@ -507,7 +507,7 @@ class _BlockTimer:
         GLOBAL_LEVEL -= 1
 
         # get timing
-        duration = get_timestamp()-self.timestamp
+        duration = get_timestamp() - self.timestamp
         duration = _get_format_duration(duration)
 
         # display log
@@ -571,7 +571,7 @@ def get_duration(timestamp):
     """
 
     # get timing
-    duration = get_timestamp()-timestamp
+    duration = get_timestamp() - timestamp
 
     # parse timing
     seconds = duration.total_seconds()
