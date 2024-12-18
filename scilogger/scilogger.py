@@ -10,6 +10,7 @@ __license__ = "BSD License"
 
 import os
 import sys
+import shutil
 import datetime
 import threading
 import logging
@@ -531,6 +532,21 @@ def enable():
     """
 
     logging.disable(0)
+
+
+def copy_config(filename):
+    """
+    Copy the default logger configuration to a file.
+
+    Parameters
+    ----------
+    filename : str
+        Filename where the default configuration will be copied.
+    """
+
+    folder = importlib.resources.files("scilogger")
+    with importlib.resources.as_file(folder.joinpath("scilogger.ini")) as fid:
+        shutil.copyfile(fid, filename)
 
 
 def get_timestamp():
