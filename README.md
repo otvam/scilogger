@@ -1,4 +1,4 @@
-# SciLogger - Python Logging for Science 
+# SciLogger - Logging for Scientific Applications 
 
 > * **Repository: [github.com/otvam/scilogger](https://github.com/otvam/scilogger)**
 > * **PyPi: [pypi.org/project/scilogger](https://pypi.org/project/scilogger)**

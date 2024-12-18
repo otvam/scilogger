@@ -16,7 +16,7 @@ version_scheme = "guess-next-dev"
 
 [project]
 name = "scilogger"
-description = "SciLogger - Python Logging for Science"
+description = "SciLogger - Logging for Scientific Applications"
 license = {text = "BSD-2-Clause"}
 authors = [{name = "Thomas Guillod", email = "guillod@otvam.ch"}]
 maintainers = [{name = "Thomas Guillod", email = "guillod@otvam.ch"}]
