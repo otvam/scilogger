@@ -249,25 +249,22 @@ class _CustomLogger(logging.Logger):
                 self.log(level, None, exc_info=ex)
             else:
                 self.log(level, str(ex))
-                self.log(level, str(ex))
-        self.log(level, "exception : %s / %s" % (module, name))
 
     def BlockIndent(self):
         """
         Return a class for indenting a block of code (using "with" statement).
             - Uses enter and exit magic methods.
-            - Indent the results inside the block.
+            - Indent the messages inside the block.
         """
 
         return _BlockIndent(self)
 
-    def BlockTimer(self, name=None, level="INFO"):
+    def BlockDisplay(self, name=None, level="INFO"):
         """
-        Return a class for timing a block of code (using "with" statement).
+        Return a class for displaying a block of code (using "with" statement).
             - Uses enter and exit magic methods.
-            - Display the name of the block.
-            - Display timing information.
-            - Indent the results inside the block.
+            - Display the name of the block (enter and exit).
+            - Indent the messages inside the block.
 
         Parameters
         ----------
@@ -277,7 +274,25 @@ class _CustomLogger(logging.Logger):
             Logging level to be used.
         """
 
-        return _BlockTimer(self, name, level)
+        return _BlockLogger(self, False, name, level)
+
+    def BlockTimer(self, name=None, level="INFO"):
+        """
+        Return a class for timing a block of code (using "with" statement).
+            - Uses enter and exit magic methods.
+            - Display the name of the block (enter and exit).
+            - Display timing information (enter and exit).
+            - Indent the messages inside the block.
+
+        Parameters
+        ----------
+        name : string
+            Name of the code block.
+        level : string
+            Logging level to be used.
+        """
+
+        return _BlockLogger(self, True, name, level)
 
 
 class _DeltaTimeFormatter(logging.Formatter):
@@ -400,7 +415,7 @@ class _BlockIndent:
     """
     Class for indenting a block of code.
         - Uses enter and exit magic methods.
-        - Indent the results inside the block.
+        - Indent the messages inside the block.
 
     Parameters
     ----------
@@ -438,32 +453,37 @@ class _BlockIndent:
         GLOBAL_LEVEL -= 1
 
 
-class _BlockTimer:
+class _BlockLogger:
     """
-    Class for timing a block of code.
+    Class for displaying and indenting a block of code.
         - Uses enter and exit magic methods.
         - Display the name of the block.
-        - Display timing information.
-        - Indent the results inside the block.
+        - Display (or not) timing information.
+        - Indent the messages inside the block.
 
     Parameters
     ----------
     logger : logger
         Logger object instance.
+    has_timer : boolean
+        Display (or not) timing information.
     name : string
         Name of the code block.
     level : string
         Logging level to be used.
     """
 
-    def __init__(self, logger, name, level):
+    def __init__(self, logger, has_timer, name, level):
         """
         Constructor.
         Set the logger.
         """
 
-        # assign
+        # assign block name
         self.name = name
+
+        # assign block timer
+        self.has_timer = has_timer
 
         # assign logger
         self.logger = logger
@@ -477,7 +497,8 @@ class _BlockTimer:
     def __enter__(self):
         """
         Enter magic method.
-        Reset the timer and log the results.
+        Start the timer and display a message.
+        Increase the indentation.
         """
 
         # start the timer
@@ -488,10 +509,16 @@ class _BlockTimer:
         duration = _get_format_duration(duration)
 
         # display log
-        if self.name is not None:
-            self.logger.log(self.level, self.name + " : enter : " + duration)
+        if self.has_timer:
+            if self.name is not None:
+                self.logger.log(self.level, self.name + " : enter : " + duration)
+            else:
+                self.logger.log(self.level, "enter : " + duration)
         else:
-            self.logger.log(self.level, "enter : " + duration)
+            if self.name is not None:
+                self.logger.log(self.level, self.name + " : enter")
+            else:
+                self.logger.log(self.level, "enter")
 
         # increase the indentation of the block
         global GLOBAL_LEVEL
@@ -500,7 +527,8 @@ class _BlockTimer:
     def __exit__(self, exc_type, exc_value, exc_traceback):
         """
         Exit magic method.
-        Get the elapsed time and log the results.
+        Display a message.
+        Restore the indentation.
         """
 
         # restore the indentation to the previous state
@@ -512,10 +540,16 @@ class _BlockTimer:
         duration = _get_format_duration(duration)
 
         # display log
-        if self.name is not None:
-            self.logger.log(self.level, self.name + " : exit : " + duration)
+        if self.has_timer:
+            if self.name is not None:
+                self.logger.log(self.level, self.name + " : exit : " + duration)
+            else:
+                self.logger.log(self.level, "exit : " + duration)
         else:
-            self.logger.log(self.level, "exit : " + duration)
+            if self.name is not None:
+                self.logger.log(self.level, self.name + " : exit")
+            else:
+                self.logger.log(self.level, "exit")
 
 
 def disable():

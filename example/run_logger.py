@@ -22,27 +22,28 @@ if __name__ == "__main__":
 
     # normal messages
     LOGGER.debug("debug level log")
+    time.sleep(0.1)
     LOGGER.info("info level log")
+    time.sleep(0.1)
     LOGGER.error("error level log")
 
     # log inside a timed block
-    with LOGGER.BlockTimer("block timing"):
+    with LOGGER.BlockTimer("example for the timed blocks", level="INFO"):
         LOGGER.info("info level log")
         time.sleep(0.1)
         LOGGER.info("info level log")
 
     # log inside an indented block
-    LOGGER.info("block indent")
-    with LOGGER.BlockIndent():
+    with LOGGER.BlockDisplay("example for the indented blocks", level="INFO"):
         LOGGER.info("info level log")
         time.sleep(0.1)
         LOGGER.info("info level log")
 
     # log an exception
     try:
-        raise ValueError("raise exception for logging")
-    except ValueError:
-        LOGGER.log_exception()
+        raise ValueError("example for the exceptions")
+    except ValueError as ex:
+        LOGGER.log_exception(ex=ex, level="ERROR")
 
     # call another module
     mod_a.display()
@@ -50,10 +51,10 @@ if __name__ == "__main__":
 
     # get total time
     (seconds, duration, date) = scilogger.get_duration(timestamp)
-    LOGGER.info("timing")
+    LOGGER.info("timing data")
     with LOGGER.BlockIndent():
-        LOGGER.info("seconds = %.3f" % seconds)
-        LOGGER.info("duration = %s" % duration)
         LOGGER.info("date = %s" % date)
+        LOGGER.info("duration = %s" % duration)
+        LOGGER.info("seconds = %.3f" % seconds)
 
     sys.exit(0)
