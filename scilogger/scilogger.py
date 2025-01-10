@@ -18,17 +18,6 @@ import configparser
 import importlib.resources
 
 
-def _decode_escape(value):
-    """
-    Decode the escape sequence in a string.
-    """
-
-    value = bytes(value, "utf-8")
-    value = value.decode("unicode_escape")
-
-    return value
-
-
 def _check_boolean(name, data):
     """
     Check a boolean.
@@ -40,7 +29,7 @@ def _check_boolean(name, data):
 
 def _check_integer(name, data):
     """
-    Check a integer.
+    Check an integer.
     """
 
     # check type
@@ -131,6 +120,17 @@ def _load_config():
             raise RuntimeError("config file cannot be loaded: %s" % file)
 
     return config
+
+
+def _get_escape(value):
+    """
+    Decode the escape sequence in a string.
+    """
+
+    value = bytes(value, "utf-8")
+    value = value.decode("unicode_escape")
+
+    return value
 
 
 def _get_level(name):
@@ -702,8 +702,8 @@ EXCEPTION_TRACE = config.getboolean("GLOBAL", "EXCEPTION_TRACE")
 INDENTATION = config.getint("GLOBAL", "INDENTATION")
 
 # load color data
-COLOR_RESET = _decode_escape(config.get("GLOBAL", "COLOR_RESET", raw=True))
-COLOR_DEFAULT = _decode_escape(config.get("GLOBAL", "COLOR_DEFAULT", raw=True))
+COLOR_RESET = _get_escape(config.get("GLOBAL", "COLOR_RESET", raw=True))
+COLOR_DEFAULT = _get_escape(config.get("GLOBAL", "COLOR_DEFAULT", raw=True))
 COLOR_USE = config.getboolean("GLOBAL", "COLOR_USE")
 
 # load timing data
@@ -714,12 +714,12 @@ DURATION_FMT = config.get("GLOBAL", "DURATION_FMT", raw=True)
 # load color level
 COLOR_LEVEL = dict(config.items("COLOR_LEVEL", raw=True))
 for tag, value in COLOR_LEVEL.items():
-    COLOR_LEVEL[tag] = _decode_escape(value)
+    COLOR_LEVEL[tag] = _get_escape(value)
 
 # load module level
 MODULE_LEVEL = dict(config.items("MODULE_LEVEL", raw=True))
 for tag, value in MODULE_LEVEL.items():
-    MODULE_LEVEL[tag] = _decode_escape(value)
+    MODULE_LEVEL[tag] = _get_escape(value)
 
 # global timestamp (constant over the complete run)
 GLOBAL_TIMESTAMP = get_timestamp()
