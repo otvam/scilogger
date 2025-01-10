@@ -40,6 +40,37 @@ export SCILOGGER="configlocal.ini"
 python run_logger.py
 ```
 
+```text
+00:00:00.00 : main     : debug    : debug level log
+00:00:00.10 : main     : info     : info level log
+00:00:00.20 : main     : error    : error level log
+00:00:00.20 : main     : info     : example for the timed blocks : enter : 00:00:00.00
+00:00:00.20 : main     : info     :     info level log
+00:00:00.30 : main     : info     :     info level log
+00:00:00.30 : main     : info     : example for the timed blocks : exit : 00:00:00.10
+00:00:00.30 : main     : info     : example for the indented blocks : enter
+00:00:00.30 : main     : info     :     info level log
+00:00:00.40 : main     : info     :     info level log
+00:00:00.40 : main     : info     : example for the indented blocks : exit
+00:00:00.40 : main     : error    : exception : builtins / ValueError
+00:00:00.40 : main     : error    :     Traceback (most recent call last):
+00:00:00.40 : main     : error    :       File "run_logger.py", line 44, in <module>
+00:00:00.40 : main     : error    :         raise ValueError("example for the exceptions")
+00:00:00.40 : main     : error    :     ValueError: example for the exceptions
+00:00:00.41 : mod_a    : info     : module_a
+00:00:00.41 : mod_a    : debug    :     debug level log
+00:00:00.41 : mod_a    : info     :     info level log
+00:00:00.41 : mod_a    : error    :     error level log
+00:00:00.41 : mod_b    : info     : module_b
+00:00:00.41 : mod_b    : debug    :     debug level log
+00:00:00.41 : mod_b    : info     :     info level log
+00:00:00.41 : mod_b    : error    :     error level log
+00:00:00.41 : main     : info     : timing data
+00:00:00.41 : main     : info     :     date = 2025-01-10T18:00:10Z
+00:00:00.41 : main     : info     :     duration = 00:00:00.41
+00:00:00.41 : main     : info     :     seconds = 0.409
+```
+
 ## Project Links
 
 * Repository: https://github.com/otvam/scilogger
