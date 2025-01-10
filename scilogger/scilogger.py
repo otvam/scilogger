@@ -243,12 +243,12 @@ class _CustomLogger(logging.Logger):
         level = logging.getLevelName(level)
 
         # log the exception
-        self.log(level, "exception : %s / %s" % (module, name))
-        with _BlockIndent(self):
-            if EXCEPTION_TRACE:
+        if EXCEPTION_TRACE:
+            self.log(level, "exception : %s / %s" % (module, name))
+            with _BlockIndent(self):
                 self.log(level, None, exc_info=ex)
-            else:
-                self.log(level, str(ex))
+        else:
+            self.log(level, "exception : %s / %s / %s" % (module, name, str(ex)))
 
     def BlockIndent(self):
         """
