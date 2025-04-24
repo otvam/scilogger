@@ -594,7 +594,8 @@ def get_timestamp():
     """
 
     if TIMESTAMP_UTC:
-        timestamp = datetime.datetime.utcnow()
+        utc = datetime.timezone.utc
+        timestamp = datetime.datetime.now(utc)
     else:
         timestamp = datetime.datetime.now()
 
