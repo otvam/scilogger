@@ -16,9 +16,9 @@ version_scheme = "guess-next-dev"
 
 [project]
 name = "scilogger"
-description = "SciLogger - Logging for Scientific Applications"
 license = "BSD-2-Clause"
 license-files = ["LICENSE.txt"]
+description = "SciLogger - Logging for Scientific Applications"
 authors = [{name = "Thomas Guillod", email = "guillod@otvam.ch"}]
 maintainers = [{name = "Thomas Guillod", email = "guillod@otvam.ch"}]
 keywords = [
