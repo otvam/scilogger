@@ -88,6 +88,6 @@ python run_logger.py
 
 ## Copyright
 
-> (c) 2023 - Thomas Guillod
+> (c) 2023-2025 - Thomas Guillod
 > 
 >  BSD 2-Clause "Simplified" License
